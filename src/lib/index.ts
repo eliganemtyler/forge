@@ -76,6 +76,7 @@ import { IconComponent } from './icon';
 import { SelectDropdownComponent } from './select/select-dropdown';
 import { StackComponent } from './stack';
 import { ButtonAreaComponent } from './button-area';
+import { OverflowMenuComponent } from './overflow-menu';
 
 export * from './accordion';
 export * from './app-bar';
@@ -141,6 +142,7 @@ export * from './utils';
 export * from './view-switcher';
 export * from './icon';
 export * from './stack';
+export * from './overflow-menu';
 
 const CUSTOM_ELEMENTS = [
   AccordionComponent,
@@ -182,6 +184,7 @@ const CUSTOM_ELEMENTS = [
   ListComponent,
   ListItemComponent,
   MenuComponent,
+  OverflowMenuComponent,
   AppBarComponent,
   AppBarSearchComponent,
   AppBarMenuButtonComponent,

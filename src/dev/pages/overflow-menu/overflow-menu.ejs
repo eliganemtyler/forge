@@ -1,0 +1,38 @@
+<div>
+    <forge-split-view id="demo-split-view">
+      <forge-split-view-panel>
+        <div class="panel-content" style="background-color: lavender;">
+            <forge-card>
+                <forge-toolbar>
+            <forge-overflow-menu id="overflow-menu">
+                <forge-icon-button id="button-a" overflow>
+                    <button type="button" (click)="console.log('a')">
+                        <forge-icon name="alpha_a_circle_outline"></forge-icon>
+                    </button>
+                    <forge-tooltip>A</forge-tooltip>
+                </forge-icon-button>
+                <forge-icon-button id="button-b" overflow>
+                    <button type="button" (click)="onAction('b')">
+                        <forge-icon name="alpha_b_circle_outline"></forge-icon>
+                    </button>
+                    <forge-tooltip>B</forge-tooltip>
+                </forge-icon-button>
+                <forge-button id="button-c" type="raised" overflow>
+                    <button [disabled]="disableC" (click)="onAction('c')">
+                        <span>C</span>
+                        <forge-icon name="alpha_c_circle_outline"></forge-icon>
+                    </button>
+                </forge-button>
+            </forge-overflow-menu>
+        </forge-toolbar>
+        
+    </forge-card>
+        </div>
+      </forge-split-view-panel>
+      <forge-split-view-panel>
+        <div class="panel-content" style="background-color: salmon;">Panel 2</div>
+      </forge-split-view-panel>
+    </forge-split-view>
+  </div>
+
+<script type="module" src="overflow-menu.ts"></script>

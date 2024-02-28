@@ -1,0 +1,14 @@
+<template>
+  <div class="forge-overflow-menu" part="root">
+    <!-- <div class="forge-overflow-menu__content" part="content"> -->
+    <slot></slot>
+    <forge-icon-button class="forge-overflow-menu__menu" part="menu">
+      <forge-menu></forge-menu>
+      <button aria-label="More actions">
+        <forge-icon name="more_vert"></forge-icon>
+      </button>
+      <forge-tooltip>More actions</forge-tooltip>
+      </forge-menu>
+    </forge-icon-button>
+    <!-- </div> -->
+</template>
