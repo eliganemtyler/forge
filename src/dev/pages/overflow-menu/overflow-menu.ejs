@@ -1,38 +1,83 @@
 <div>
     <forge-split-view id="demo-split-view">
-      <forge-split-view-panel>
-        <div class="panel-content" style="background-color: lavender;">
-            <forge-card>
-                <forge-toolbar>
-            <forge-overflow-menu id="overflow-menu">
-                <forge-icon-button id="button-a" overflow>
-                    <button type="button" (click)="console.log('a')">
-                        <forge-icon name="alpha_a_circle_outline"></forge-icon>
-                    </button>
-                    <forge-tooltip>A</forge-tooltip>
-                </forge-icon-button>
-                <forge-icon-button id="button-b" overflow>
-                    <button type="button" (click)="onAction('b')">
-                        <forge-icon name="alpha_b_circle_outline"></forge-icon>
-                    </button>
-                    <forge-tooltip>B</forge-tooltip>
-                </forge-icon-button>
-                <forge-button id="button-c" type="raised" overflow>
-                    <button [disabled]="disableC" (click)="onAction('c')">
-                        <span>C</span>
-                        <forge-icon name="alpha_c_circle_outline"></forge-icon>
-                    </button>
-                </forge-button>
-            </forge-overflow-menu>
-        </forge-toolbar>
-        
-    </forge-card>
-        </div>
-      </forge-split-view-panel>
-      <forge-split-view-panel>
-        <div class="panel-content" style="background-color: salmon;">Panel 2</div>
-      </forge-split-view-panel>
+        <forge-split-view-panel>
+            <div class="panel-content" style="background-color: lavender;">
+                <forge-card>
+                    <forge-toolbar>
+                        <forge-overflow-menu slot="end" id="overflow-menu">
+                            <forge-icon-button id="button-a">
+                                <button type="button">
+                                    <forge-icon name="alpha_a_circle_outline"></forge-icon>
+                                </button>
+                                <forge-tooltip>A</forge-tooltip>
+                            </forge-icon-button>
+                            <forge-icon-button id="button-b">
+                                <button type="button">
+                                    <forge-icon name="alpha_b_circle_outline"></forge-icon>
+                                </button>
+                                <forge-tooltip>B</forge-tooltip>
+                            </forge-icon-button>
+                            <forge-button id="button-c" type="raised">
+                                <button>
+                                    <span>C</span>
+                                    <forge-icon name="alpha_c_circle_outline"></forge-icon>
+                                </button>
+                            </forge-button>
+                            <forge-button id="button-d" type="raised">
+                                <button>
+                                    <span>D</span>
+                                    <forge-icon name="alpha_d_circle_outline"></forge-icon>
+                                </button>
+                            </forge-button>
+                        </forge-overflow-menu>
+                    </forge-toolbar>
+                </forge-card>
+            </div>
+        </forge-split-view-panel>
+        <forge-split-view-panel>
+            <div class="panel-content" style="background-color: salmon;">Panel 2</div>
+        </forge-split-view-panel>
     </forge-split-view>
-  </div>
+    <forge-checkbox>
+        <input type="checkbox" id="show-a" />
+        <label for="show-a">Show icon button A</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="show-b" />
+        <label for="show-b">Show icon button B</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="show-c" />
+        <label for="show-c">Show button C</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="show-d" />
+        <label for="show-d">Show button D</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="use-margin" />
+        <label for="use-margin">Buttons have margin</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="use-padding" />
+        <label for="use-padding">Buttons have padding</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="disable-a" />
+        <label for="disable-a">Disable A</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="disable-b" />
+        <label for="disable-b">Disable B</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="disable-c" />
+        <label for="disable-c">Disable C</label>
+    </forge-checkbox>
+    <forge-checkbox>
+        <input type="checkbox" id="disable-d" />
+        <label for="disable-d">Disable D</label>
+    </forge-checkbox>
+</div>
 
 <script type="module" src="overflow-menu.ts"></script>

@@ -1,27 +1,43 @@
 forge-split-view {
-    height: 300px;
-  }
-  
-  .panel-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-  }
+  height: 300px;
+}
 
-  forge-card {
-    width: 50%;
-    padding: 16px;
-    --forge-card-padding: 0;
+.panel-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
 
-    forge-scaffold {
-        [slot="body"] {
-            padding: 16px;
-        }
+forge-card {
+  width: 90%;
+  padding: 16px;
+  --forge-card-padding: 0;
+
+  forge-scaffold {
+    [slot="body"] {
+      padding: 16px;
     }
+  }
 }
 
 forge-overflow-menu {
   align-items: center;
+}
+
+.use-margin {
+
+  forge-icon-button,
+  forge-button {
+    margin: 0 16px;
+  }
+}
+
+.use-padding {
+
+  forge-icon-button,
+  forge-button {
+    padding: 0 16px;
+  }
 }

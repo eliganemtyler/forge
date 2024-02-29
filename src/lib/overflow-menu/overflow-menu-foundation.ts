@@ -9,17 +9,18 @@ export interface IOverflowMenuFoundation extends ICustomElementFoundation {
 }
 
 export class OverflowMenuFoundation implements IOverflowMenuFoundation {
-  private _slotListener: () => void;
+  private _slotChangeListener: () => void;
   private _resizeObserverCallback: ForgeResizeObserverCallback;
 
   constructor(private _adapter: IOverflowMenuAdapter) {
-    this._slotListener = () => this._onSlotChange();
+    this._slotChangeListener = () => this._onSlotChange();
     this._resizeObserverCallback = (entry: ResizeObserverEntry) => this._onResize(entry); // todo throttle?
   }
 
   public initialize(): void {
-    this._adapter.addSlotChangeListener(this._slotListener);
-
+    this._adapter.addSlotChangeListener(this._slotChangeListener);
+    this._adapter.observeResize(this._resizeObserverCallback);
+    this._adapter.observeDisabled(this._onDisable);
   }
 
   public disconnect(): void {
@@ -31,8 +32,14 @@ export class OverflowMenuFoundation implements IOverflowMenuFoundation {
   }
 
   private _onResize(entry: ResizeObserverEntry): void {
-
+    console.log('on resize');
   }
+
+  private _onDisable: MutationCallback = (mutations: MutationRecord[], observer: MutationObserver) => {
+    console.log('on mutate');
+    // todo optimize to update only the relevant property of the relevant menu option (currently just observing disabled via attributefilter)
+    this._buildMenu();
+  };
 
   private _init(): void {
 

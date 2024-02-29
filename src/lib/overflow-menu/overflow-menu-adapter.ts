@@ -2,6 +2,7 @@ import { ForgeResizeObserver, ForgeResizeObserverCallback, deepQuerySelectorAll,
 import { IMenuComponent, MenuOptionFactory } from '../menu';
 import { IOverflowMenuComponent } from './overflow-menu';
 import { IOverflowMenuButton, OVERFLOW_MENU_CONSTANTS } from './overflow-menu-constants';
+import { ButtonComponent } from '../button';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOverflowMenuAdapter {
@@ -9,7 +10,7 @@ export interface IOverflowMenuAdapter {
   addSlotChangeListener(listener: () => void): void;
   observeResize(callback: (entry: ResizeObserverEntry) => void): void;
   unobserveResize(): void;
-  observeMutate(callback: MutationCallback, options: MutationObserverInit): void;
+  observeDisabled(callback: MutationCallback): void;
   unobserveMutate(): void;
 }
 
@@ -18,7 +19,6 @@ export class OverflowMenuAdapter implements IOverflowMenuAdapter {
   private _contentElement: HTMLElement;
   private _contentSlotElement: HTMLSlotElement;
   private _menuElement: IMenuComponent;
-  private _projectedButtons: IOverflowMenuButton['element'][] = [] as IOverflowMenuButton['element'][];
 
   private _mutationObserver?: MutationObserver;
 
@@ -27,19 +27,15 @@ export class OverflowMenuAdapter implements IOverflowMenuAdapter {
     // this._contentElement = getShadowElement(this._component, OVERFLOW_MENU_CONSTANTS.selectors.CONTENT);
     this._contentSlotElement = getShadowElement(this._component, OVERFLOW_MENU_CONSTANTS.selectors.CONTENT_SLOT) as HTMLSlotElement;
     this._menuElement = getShadowElement(this._component, OVERFLOW_MENU_CONSTANTS.selectors.MENU) as IMenuComponent;
-
-    // console.log(this._contentElement);
-    console.log(this._contentSlotElement);
-    console.log(this._menuElement);
-
   }
 
   public addSlotChangeListener(listener: () => void): void {
     this._contentSlotElement.addEventListener('slotchange', listener);
-    // console.log(this._contentSlotElement.children);
-    // console.log()
+  }
+
+  public getSlottedButtons(): IOverflowMenuButton['element'][] {
     const nodeList = this._component.querySelectorAll<IOverflowMenuButton['element']>(OVERFLOW_MENU_CONSTANTS.selectors.BUTTONS);
-    this._projectedButtons = Array.from(nodeList);
+    return Array.from(nodeList);
   }
 
   public observeResize(callback: ForgeResizeObserverCallback): void {
@@ -50,9 +46,16 @@ export class OverflowMenuAdapter implements IOverflowMenuAdapter {
     ForgeResizeObserver.unobserve(this._rootElement);
   }
 
-  public observeMutate(callback: MutationCallback, options: MutationObserverInit): void {
+  // Observe disabled attribute change on native button
+  public observeDisabled(callback: MutationCallback): void {
     this._mutationObserver = new MutationObserver(callback);
-    this._mutationObserver.observe(this._rootElement, options);
+    this.getSlottedButtons().forEach(button => {
+      const htmlButton = (button as Element).getElementsByTagName('button')[0];
+      this._mutationObserver?.observe(htmlButton, {
+        attributes: true,
+        attributeFilter: ['disabled']
+      });
+    });
   }
 
   public unobserveMutate(): void {
