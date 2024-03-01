@@ -22,9 +22,10 @@ forge-card {
   }
 }
 
-forge-overflow-menu {
-  align-items: center;
-}
+// forge-overflow-menu {
+//   width: 100%;
+//   align-items: center;
+// }
 
 .use-margin {
 
@@ -40,4 +41,8 @@ forge-overflow-menu {
   forge-button {
     padding: 0 16px;
   }
+}
+
+forge-icon-button {
+  color: purple;
 }

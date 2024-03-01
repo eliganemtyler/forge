@@ -7,6 +7,7 @@ const elementName = `${COMPONENT_NAME_PREFIX}overflow-menu`;
 const classes = {
   ROOT: 'forge-overflow-menu',
   CONTENT: 'forge-overflow-menu__content',
+  MENU_BUTTON: 'forge-overflow-menu__menu-button',
   MENU: 'forge-overflow-menu__menu'
 };
 
@@ -14,6 +15,7 @@ const selectors = {
   ROOT: `.${classes.ROOT}`,
   CONTENT: `.${classes.CONTENT}`,
   CONTENT_SLOT: `.${classes.ROOT} > slot`,
+  MENU_BUTTON: `.${classes.MENU_BUTTON}`,
   MENU: `.${classes.MENU}`,
   BUTTONS: `${BUTTON_CONSTANTS.elementName}, ${ICON_BUTTON_CONSTANTS.elementName}`
 };

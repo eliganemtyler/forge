@@ -5,10 +5,7 @@
 
 @include mixins.core-styles;
 
-// :host {
-//     display: flex;
-//     flex-wrap: wrap;
-//     justify-content: end;
-//     width: 100%;
-//     position: relative;
-// }
+:host {
+    width: 100%;
+    align-items: center;
+}

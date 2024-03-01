@@ -2,39 +2,46 @@ import { ForgeResizeObserver, ForgeResizeObserverCallback, deepQuerySelectorAll,
 import { IMenuComponent, MenuOptionFactory } from '../menu';
 import { IOverflowMenuComponent } from './overflow-menu';
 import { IOverflowMenuButton, OVERFLOW_MENU_CONSTANTS } from './overflow-menu-constants';
-import { ButtonComponent } from '../button';
+import { BaseAdapter, IBaseAdapter } from '../core';
+import { IIconButtonComponent } from '../icon-button';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IOverflowMenuAdapter {
+export interface IOverflowMenuAdapter extends IBaseAdapter {
   hideElement(el: HTMLElement): void;
+  showElement(el: HTMLElement): void;
   addSlotChangeListener(listener: () => void): void;
   observeResize(callback: (entry: ResizeObserverEntry) => void): void;
   unobserveResize(): void;
   observeDisabled(callback: MutationCallback): void;
   unobserveMutate(): void;
+  setMenuOptions(optionFactory: MenuOptionFactory): void;
+  slottedButtons: IOverflowMenuButton['element'][];
+  menuButtonElement: IIconButtonComponent;
 }
 
-export class OverflowMenuAdapter implements IOverflowMenuAdapter {
+export class OverflowMenuAdapter extends BaseAdapter<IOverflowMenuComponent> implements IOverflowMenuAdapter {
   private _rootElement: HTMLElement;
-  private _contentElement: HTMLElement;
   private _contentSlotElement: HTMLSlotElement;
+  private _menuButtonElement: IIconButtonComponent;
   private _menuElement: IMenuComponent;
 
   private _mutationObserver?: MutationObserver;
 
-  constructor(private _component: IOverflowMenuComponent) {
-    this._rootElement = getShadowElement(this._component, OVERFLOW_MENU_CONSTANTS.selectors.ROOT) as HTMLSlotElement;
-    // this._contentElement = getShadowElement(this._component, OVERFLOW_MENU_CONSTANTS.selectors.CONTENT);
-    this._contentSlotElement = getShadowElement(this._component, OVERFLOW_MENU_CONSTANTS.selectors.CONTENT_SLOT) as HTMLSlotElement;
-    this._menuElement = getShadowElement(this._component, OVERFLOW_MENU_CONSTANTS.selectors.MENU) as IMenuComponent;
+  constructor(private component: IOverflowMenuComponent) {
+    super(component);
+    this._rootElement = getShadowElement(this.component, OVERFLOW_MENU_CONSTANTS.selectors.ROOT) as HTMLSlotElement;
+    this._contentSlotElement = getShadowElement(this.component, OVERFLOW_MENU_CONSTANTS.selectors.CONTENT_SLOT) as HTMLSlotElement;
+    this._menuButtonElement = getShadowElement(this.component, OVERFLOW_MENU_CONSTANTS.selectors.MENU_BUTTON) as IIconButtonComponent;
+    this._menuElement = getShadowElement(this.component, OVERFLOW_MENU_CONSTANTS.selectors.MENU) as IMenuComponent;
+
   }
 
   public addSlotChangeListener(listener: () => void): void {
     this._contentSlotElement.addEventListener('slotchange', listener);
   }
 
-  public getSlottedButtons(): IOverflowMenuButton['element'][] {
-    const nodeList = this._component.querySelectorAll<IOverflowMenuButton['element']>(OVERFLOW_MENU_CONSTANTS.selectors.BUTTONS);
+  public get slottedButtons(): IOverflowMenuButton['element'][] {
+    const nodeList = this.component.querySelectorAll<IOverflowMenuButton['element']>(OVERFLOW_MENU_CONSTANTS.selectors.BUTTONS);
     return Array.from(nodeList);
   }
 
@@ -49,7 +56,7 @@ export class OverflowMenuAdapter implements IOverflowMenuAdapter {
   // Observe disabled attribute change on native button
   public observeDisabled(callback: MutationCallback): void {
     this._mutationObserver = new MutationObserver(callback);
-    this.getSlottedButtons().forEach(button => {
+    this.slottedButtons.forEach(button => {
       const htmlButton = (button as Element).getElementsByTagName('button')[0];
       this._mutationObserver?.observe(htmlButton, {
         attributes: true,
@@ -63,8 +70,12 @@ export class OverflowMenuAdapter implements IOverflowMenuAdapter {
     this._mutationObserver = undefined;
   }
 
-  public showElement(el: HTMLElement): void {
+  public get menuButtonElement(): typeof this._menuButtonElement {
+    return this._menuButtonElement;
+  }
 
+  public showElement(el: HTMLElement): void {
+    el.style.display = ''; // same as revert-layer basically?
   }
 
   public hideElement(el: HTMLElement): void {
@@ -75,8 +86,10 @@ export class OverflowMenuAdapter implements IOverflowMenuAdapter {
     return 0;
   }
 
-  public setMenuOptions(options: MenuOptionFactory): void {
-    this._menuElement.options = options;
+  public setMenuOptions(optionFactory: MenuOptionFactory): void {
+    console.log('optionfac');
+    this._menuElement.options = optionFactory; // setting here isn't working. is this a bug with menu getter or setter?
+    console.log(this._menuElement.options); // returns empty array
   }
 
 }

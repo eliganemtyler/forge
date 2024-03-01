@@ -9,17 +9,8 @@
   align-items: center;
 }
 
-// @mixin content(){
-//   display: flex;
-//   align-items: center;
-// }
-
 @mixin core-styles() {
   .forge-overflow-menu {
     @include base;
-
-    // &__content {
-    //   @include content;
-    // }
   }
 }
