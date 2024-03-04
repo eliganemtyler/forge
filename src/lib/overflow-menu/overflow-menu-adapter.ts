@@ -1,5 +1,5 @@
-import { ForgeResizeObserver, ForgeResizeObserverCallback, deepQuerySelectorAll, getShadowElement } from '@tylertech/forge-core';
-import { IMenuComponent, MenuOptionFactory } from '../menu';
+import { ForgeResizeObserver, ForgeResizeObserverCallback, deepQuerySelectorAll, getLightElement, getShadowElement } from '@tylertech/forge-core';
+import { IMenuComponent, IMenuOption, MenuOptionFactory } from '../menu';
 import { IOverflowMenuComponent } from './overflow-menu';
 import { IOverflowMenuButton, OVERFLOW_MENU_CONSTANTS } from './overflow-menu-constants';
 import { BaseAdapter, IBaseAdapter } from '../core';
@@ -33,7 +33,6 @@ export class OverflowMenuAdapter extends BaseAdapter<IOverflowMenuComponent> imp
     this._contentSlotElement = getShadowElement(this.component, OVERFLOW_MENU_CONSTANTS.selectors.CONTENT_SLOT) as HTMLSlotElement;
     this._menuButtonElement = getShadowElement(this.component, OVERFLOW_MENU_CONSTANTS.selectors.MENU_BUTTON) as IIconButtonComponent;
     this._menuElement = getShadowElement(this.component, OVERFLOW_MENU_CONSTANTS.selectors.MENU) as IMenuComponent;
-
   }
 
   public addSlotChangeListener(listener: () => void): void {
@@ -82,14 +81,8 @@ export class OverflowMenuAdapter extends BaseAdapter<IOverflowMenuComponent> imp
     el.style.display = 'none';
   }
 
-  public calculatedWidth(el: HTMLElement): number {
-    return 0;
-  }
-
   public setMenuOptions(optionFactory: MenuOptionFactory): void {
-    console.log('optionfac');
-    this._menuElement.options = optionFactory; // setting here isn't working. is this a bug with menu getter or setter?
-    console.log(this._menuElement.options); // returns empty array
+    this._menuElement.options = optionFactory;
   }
 
 }
