@@ -22,7 +22,7 @@ export class OverflowMenuFoundation implements IOverflowMenuFoundation {
   constructor(private _adapter: IOverflowMenuAdapter) {
     this._slotChangeListener = () => this._onSlotChange();
     this._resizeObserverCallback = (entry: ResizeObserverEntry) => this._onResize(entry); // todo throttle? probably not
-    this._filteredOptions = () => this._options.filter(option => { console.log('fac2'); return this._buttons[option.value].overflow === true; });
+    this._filteredOptions = () => this._options.filter(option => { return this._buttons[option.value].overflow === true; });
   }
 
   public initialize(): void {
@@ -34,9 +34,10 @@ export class OverflowMenuFoundation implements IOverflowMenuFoundation {
 
   }
 
+
   private _onSlotChange(): void {
     console.log('slot change'); // contentchildren equivalent
-    this._init();
+    this.init();
   }
 
   private _onResize(entry: ResizeObserverEntry): void {
@@ -50,11 +51,14 @@ export class OverflowMenuFoundation implements IOverflowMenuFoundation {
     this._buildMenu(this._adapter.slottedButtons);
   };
 
-  private _init(): void {
+  public init(): void {
     this._adapter.unobserveResize();
     this._breakpoints = [];
     this._buttons = [];
     this._hiddenCount = 0;
+
+    // Get menu element width
+    this._adapter.showElement(this._adapter.menuButtonElement);
     const menuWidth = this._calculatedWidth(this._adapter.menuButtonElement);
     this._adapter.hideElement(this._adapter.menuButtonElement);
 
@@ -74,6 +78,11 @@ export class OverflowMenuFoundation implements IOverflowMenuFoundation {
 
     this._buildMenu(buttons);
 
+    // All buttons need to be visible while breakpoints calculating
+    buttons.forEach(button => {
+      this._adapter.showElement(button);
+    });
+
     // Set breakpoints from largest to smallest
     let x = menuWidth;
     for (const button of buttons) {
@@ -89,6 +98,9 @@ export class OverflowMenuFoundation implements IOverflowMenuFoundation {
 
     // First breakpoint accounts for menu width
     this._breakpoints[0] -= menuWidth;
+
+    console.log('breakpoints: ');
+    console.log(this._breakpoints);
 
     this._adapter.setMenuOptions(this._filteredOptions);
 

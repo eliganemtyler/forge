@@ -13,7 +13,7 @@ import { tylIconMoreVert } from '@tylertech/tyler-icons/standard';
 import { ButtonComponent } from '../button';
 
 export interface IOverflowMenuComponent extends ICustomElement {
-
+  reinitialize(): void;
 }
 
 declare global {
@@ -56,7 +56,9 @@ export class OverflowMenuComponent extends HTMLElement implements IOverflowMenuC
     this._foundation.disconnect();
   }
 
-  public attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
-
+  /** Recalculates the overflow menu breakpoints */
+  public reinitialize(): void {
+    this._foundation.init();
   }
+
 }

@@ -1,7 +1,7 @@
 import '$src/shared';
 import { randomTimeout } from '$src/utils/utils';
 import { IconRegistry } from '@tylertech/forge/icon';
-import type { ButtonComponent, IListItemComponent, IMenuComponent, IMenuOption, ISwitchComponent } from '@tylertech/forge';
+import type { ButtonComponent, IListItemComponent, IMenuComponent, IMenuOption, IOverflowMenuComponent, ISwitchComponent } from '@tylertech/forge';
 import '@tylertech/forge/menu';
 import '@tylertech/forge/divider';
 import '@tylertech/forge/button';
@@ -23,7 +23,7 @@ IconRegistry.define([
   tylIconAlphaECircleOutline
 ]);
 
-const overflowMenu = document.getElementById('overflow-menu');
+const overflowMenu = document.getElementById('overflow-menu') as IOverflowMenuComponent;
 const buttonA = document.getElementById('button-a');
 const buttonB = document.getElementById('button-b');
 const buttonC = document.getElementById('button-c');
@@ -42,6 +42,12 @@ const disableB = document.getElementById('disable-b');
 const disableC = document.getElementById('disable-c');
 const disableD = document.getElementById('disable-d');
 const disableCBs = [disableA, disableB, disableC, disableD];
+
+const reinitButton = document.getElementById('opt-reinit') as HTMLButtonElement;
+reinitButton.addEventListener('click', evt => {
+  overflowMenu.reinitialize();
+});
+
 
 buttons.forEach((button, i) => {
 
