@@ -1,0 +1,11 @@
+@use './mixins';
+
+@use '../button/forge-button';
+@use '../icon-button/forge-icon-button';
+
+@include mixins.core-styles;
+
+:host {
+  width: 100%;
+  align-items: center;
+}

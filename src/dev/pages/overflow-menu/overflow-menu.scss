@@ -1,0 +1,48 @@
+forge-split-view {
+  height: 300px;
+}
+
+.panel-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+forge-card {
+  width: 90%;
+  padding: 16px;
+  --forge-card-padding: 0;
+
+  forge-scaffold {
+    [slot="body"] {
+      padding: 16px;
+    }
+  }
+}
+
+// forge-overflow-menu {
+//   width: 100%;
+//   align-items: center;
+// }
+
+.use-margin {
+
+  forge-icon-button,
+  forge-button {
+    margin: 0 16px;
+  }
+}
+
+.use-padding {
+
+  forge-icon-button,
+  forge-button {
+    padding: 0 16px;
+  }
+}
+
+forge-icon-button {
+  color: purple;
+}

@@ -54,6 +54,7 @@ import { ListComponent } from './list';
 import { ListItemComponent } from './list/list-item';
 import { MenuComponent } from './menu';
 import { OpenIconComponent } from './open-icon';
+import { OverflowMenuComponent } from './overflow-menu';
 import { OverlayComponent } from './overlay';
 import { PageStateComponent } from './page-state';
 import { PaginatorComponent } from './paginator';
@@ -125,6 +126,7 @@ export * from './linear-progress';
 export * from './list';
 export * from './menu';
 export * from './open-icon';
+export * from './overflow-menu';
 export * from './overlay';
 export * from './page-state';
 export * from './paginator';
@@ -208,6 +210,7 @@ const CUSTOM_ELEMENTS = [
   OpenIconComponent,
   OptionComponent,
   OptionGroupComponent,
+  OverflowMenuComponent,
   OverlayComponent,
   PageStateComponent,
   PaginatorComponent,

@@ -1,0 +1,16 @@
+@use './variables';
+
+@mixin base() {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  width: 100%;
+  position: relative;
+  align-items: center;
+}
+
+@mixin core-styles() {
+  .forge-overflow-menu {
+    @include base;
+  }
+}
