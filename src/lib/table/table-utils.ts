@@ -1523,16 +1523,88 @@ export class TableUtils {
       throw new Error('Invalid filter delegate.');
     }
 
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     // If this is a FormFieldComponentDelegate then we can listen for when the value changes, otherwise we just render the custom delegate element
     if (!!filterListener && delegate instanceof FormFieldComponentDelegate && isFunction(delegate.onChange)) {
       if (!isDefined(columnConfig.filterDebounceTime) || isNumber(columnConfig.filterDebounceTime)) {
         const debounceTime = isDefined(columnConfig.filterDebounceTime)
           ? (columnConfig.filterDebounceTime as number)
           : TABLE_CONSTANTS.numbers.DEFAULT_FILTER_DEBOUNCE_TIME;
-        delegate.onChange(debounce((value: any) => filterListener(value, columnIndex), debounceTime));
+        delegate.onChange(
+          debounce((value: any) => filterListener(value, columnIndex), debounceTime),
+          { signal }
+        );
       } else {
-        delegate.onChange((value: any) => filterListener(value, columnIndex));
+        delegate.onChange((value: any) => filterListener(value, columnIndex), { signal });
       }
+    }
+
+    // Remove old event listener when filter is toggled back on
+    // todo this works but would overwrite a function filter delegate...
+
+    // columnConfig.filterDelegate = () => {
+    //   controller.abort();
+    //   return delegate;
+    // };
+
+    // seems to work?
+    // no... this creates additional 'is factory' each time...
+    // const delegateOrDelegateFactory = columnConfig.filterDelegate;
+    // columnConfig.filterDelegate = () => {
+    //   controller.abort();
+    //   if (isFunction(delegateOrDelegateFactory)) {
+    //     console.log('is factory');
+    //     return (delegateOrDelegateFactory as TableFilterDelegateFactory)();
+    //   }
+    //   console.log('is delegate');
+    //   return delegate;
+    // };
+
+    // take 3 wip
+
+    // if (!isFunction(columnConfig.filterDelegate)) {
+    //   columnConfig.filterDelegate = () => {
+    //     console.log('comp');
+    //     controller.abort();
+    //     return delegate;
+    //   };
+    // } else {
+    //   const oldFac = columnConfig.filterDelegate as TableFilterDelegateFactory;
+    //   columnConfig.filterDelegate = () => {
+    //     console.log('fac');
+    //     controller.abort();
+    //     return oldFac();
+    //   };
+    // }
+
+    if (!isFunction(columnConfig.filterDelegate)) {
+      columnConfig.filterDelegate = () => {
+        console.log('comp');
+        controller.abort();
+        return delegate;
+      };
+    } else {
+      let fac = columnConfig.filterDelegate as TableFilterDelegateFactory;
+
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      function trampoline(f: () => any) {
+        let x = f;
+        while (typeof x() === 'function') {
+          x = x();
+        }
+        return x;
+      }
+
+      fac = trampoline(fac);
+
+      columnConfig.filterDelegate = () => {
+        controller.abort();
+        return fac();
+      };
+
+      console.log(fac);
     }
 
     return delegate.element;

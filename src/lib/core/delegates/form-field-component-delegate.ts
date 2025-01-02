@@ -23,7 +23,7 @@ export abstract class FormFieldComponentDelegate<T extends HTMLElement, K extend
     super(config);
   }
 
-  public abstract onChange(listener: (value: unknown) => void): void;
+  public abstract onChange(listener: (value: unknown) => void, options?: AddEventListenerOptions): void;
   public abstract onFocus(cb: (evt: Event) => void): void;
   public abstract onBlur(cb: (evt: Event) => void): void;
 }

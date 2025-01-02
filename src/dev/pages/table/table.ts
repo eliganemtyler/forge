@@ -57,7 +57,7 @@ const columnConfigurations: IColumnConfiguration[] = [
     initialSort: { direction: SortDirection.Descending, sortOrder: 1 } as ISortedColumn,
     headerTemplate: () => Promise.resolve('<span>Player names</span>'),
     filter: true,
-    filterDelegate: () => new TextFieldComponentDelegate({ options: { placeholder: 'Filter name...' }})
+    filterDelegate: new TextFieldComponentDelegate({ options: { placeholder: new Date().getUTCSeconds().toString(), attributes: {'id': new Date().getUTCSeconds().toString()} } })
   },
   {
     header: 'Age',
@@ -67,7 +67,7 @@ const columnConfigurations: IColumnConfiguration[] = [
     initialSort: true,
     sortDirection: SortDirection.Descending,
     filter: true,
-    filterDelegate: new TextFieldComponentDelegate({ options: { placeholder: 'Filter age...' }})
+    filterDelegate: () => new TextFieldComponentDelegate({ options: { placeholder: new Date().getUTCSeconds().toString() }})
   },
   {
     header: 'Position',
@@ -75,13 +75,13 @@ const columnConfigurations: IColumnConfiguration[] = [
     resizable: false,
     sortable: true,
     preventUnsort: true,
-    filter: true,
+    // filter: true,
     filterDebounceTime: 0,
     filterDelegate: new SelectComponentDelegate({ props: { options: positionOptions, placeholder: 'Filter position...' }})
   },
   { template: getMenuColumnTemplate, resizable: false, align: CellAlign.Center, headerCellStyle: { width: '50px' }, stopCellTemplateClickPropagation: true },
   {
-    filter: true,
+    // filter: true,
     filterDelegate: new ButtonComponentDelegate({ options: { text: 'Clear filters '} }),
     template: getExpandRowColumnTemplate, resizable: false, align: CellAlign.Center, headerCellStyle: { width: '50px' }
   }
@@ -380,3 +380,10 @@ function getSelectAllTemplate(): string {
     </div>
   `;
 }
+
+// let n = 3; // 5000;
+// while (n--){
+//   console.log('loop')
+//   table.filter = false;
+//   table.filter = true;
+// }

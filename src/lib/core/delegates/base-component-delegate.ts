@@ -32,6 +32,7 @@ export abstract class BaseComponentDelegate<T extends HTMLElement, K extends IBa
   }
 
   public destroy(): void {
+    console.log('destroy base component delegate');
     this.disconnect();
   }
 
