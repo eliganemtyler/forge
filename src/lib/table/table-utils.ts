@@ -1515,16 +1515,28 @@ export class TableUtils {
   private static _createFilterElement(columnConfig: IColumnConfiguration, columnIndex: number, filterListener: TableFilterListener): HTMLElement {
     let delegate: IFormFieldComponentDelegate<any> | IBaseComponentDelegate<HTMLElement>;
 
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     if (isFunction(columnConfig.filterDelegate)) {
       delegate = (columnConfig.filterDelegate as TableFilterDelegateFactory)();
     } else if (columnConfig.filterDelegate instanceof FormFieldComponentDelegate || columnConfig.filterDelegate instanceof BaseComponentDelegate) {
       delegate = columnConfig.filterDelegate;
+
+      const foo = ((c: AbortController) => {
+        c.abort();
+        console.log('hey');
+        console.log(this);
+        return delegate;
+      }) as TableFilterDelegateFactory;
+
+      columnConfig.filterDelegate = foo.bind(this, controller);
     } else {
       throw new Error('Invalid filter delegate.');
     }
 
-    const controller = new AbortController();
-    const signal = controller.signal;
+    // const controller = new AbortController();
+    // const signal = controller.signal;
 
     // If this is a FormFieldComponentDelegate then we can listen for when the value changes, otherwise we just render the custom delegate element
     if (!!filterListener && delegate instanceof FormFieldComponentDelegate && isFunction(delegate.onChange)) {
@@ -1579,33 +1591,32 @@ export class TableUtils {
     //   };
     // }
 
-    if (!isFunction(columnConfig.filterDelegate)) {
-      columnConfig.filterDelegate = () => {
-        console.log('comp');
-        controller.abort();
-        return delegate;
-      };
-    } else {
-      let fac = columnConfig.filterDelegate as TableFilterDelegateFactory;
+    // if (!isFunction(columnConfig.filterDelegate)) {
+    //   columnConfig.filterDelegate = () => {
+    //     console.log('comp');
+    //     controller.abort();
+    //     return delegate;
+    //   };
+    // } else {
+    //   const fac = columnConfig.filterDelegate as TableFilterDelegateFactory;
 
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-      function trampoline(f: () => any) {
-        let x = f;
-        while (typeof x() === 'function') {
-          x = x();
-        }
-        return x;
-      }
+    //   // // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    //   // function trampoline(f: () => any) {
+    //   //   let x = f;
+    //   //   while (typeof x() === 'function') {
+    //   //     x = x();
+    //   //   }
+    //   //   return x;
+    //   // }
 
-      fac = trampoline(fac);
+    //   // fac = trampoline(fac);
 
-      columnConfig.filterDelegate = () => {
-        controller.abort();
-        return fac();
-      };
-
-      console.log(fac);
-    }
+    //   columnConfig.filterDelegate = () => {
+    //     console.log('func');
+    //     controller.abort();
+    //     return fac();
+    //   };
+    // }
 
     return delegate.element;
   }
