@@ -1523,20 +1523,18 @@ export class TableUtils {
     } else if (columnConfig.filterDelegate instanceof FormFieldComponentDelegate || columnConfig.filterDelegate instanceof BaseComponentDelegate) {
       delegate = columnConfig.filterDelegate;
 
-      const foo = ((c: AbortController) => {
-        c.abort();
-        console.log('hey');
-        console.log(this);
+      const foo = ((c?: AbortController, d?: number) => {
+        c?.abort();
+        console.log('factory');
+        console.log(d);
+        // console.log(this);
         return delegate;
       }) as TableFilterDelegateFactory;
 
-      columnConfig.filterDelegate = foo.bind(this, controller);
+      columnConfig.filterDelegate = foo;
     } else {
       throw new Error('Invalid filter delegate.');
     }
-
-    // const controller = new AbortController();
-    // const signal = controller.signal;
 
     // If this is a FormFieldComponentDelegate then we can listen for when the value changes, otherwise we just render the custom delegate element
     if (!!filterListener && delegate instanceof FormFieldComponentDelegate && isFunction(delegate.onChange)) {
@@ -1553,70 +1551,21 @@ export class TableUtils {
       }
     }
 
-    // Remove old event listener when filter is toggled back on
-    // todo this works but would overwrite a function filter delegate...
+    if (isFunction(columnConfig.filterDelegate)) {
+      console.log('overwrite:');
+      const d = new Date().getUTCSeconds();
+      console.log(d);
 
-    // columnConfig.filterDelegate = () => {
-    //   controller.abort();
-    //   return delegate;
-    // };
+      const foo = columnConfig.filterDelegate as TableFilterDelegateFactory;
 
-    // seems to work?
-    // no... this creates additional 'is factory' each time...
-    // const delegateOrDelegateFactory = columnConfig.filterDelegate;
-    // columnConfig.filterDelegate = () => {
-    //   controller.abort();
-    //   if (isFunction(delegateOrDelegateFactory)) {
-    //     console.log('is factory');
-    //     return (delegateOrDelegateFactory as TableFilterDelegateFactory)();
-    //   }
-    //   console.log('is delegate');
-    //   return delegate;
-    // };
-
-    // take 3 wip
-
-    // if (!isFunction(columnConfig.filterDelegate)) {
-    //   columnConfig.filterDelegate = () => {
-    //     console.log('comp');
-    //     controller.abort();
-    //     return delegate;
-    //   };
-    // } else {
-    //   const oldFac = columnConfig.filterDelegate as TableFilterDelegateFactory;
-    //   columnConfig.filterDelegate = () => {
-    //     console.log('fac');
-    //     controller.abort();
-    //     return oldFac();
-    //   };
-    // }
-
-    // if (!isFunction(columnConfig.filterDelegate)) {
-    //   columnConfig.filterDelegate = () => {
-    //     console.log('comp');
-    //     controller.abort();
-    //     return delegate;
-    //   };
-    // } else {
-    //   const fac = columnConfig.filterDelegate as TableFilterDelegateFactory;
-
-    //   // // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    //   // function trampoline(f: () => any) {
-    //   //   let x = f;
-    //   //   while (typeof x() === 'function') {
-    //   //     x = x();
-    //   //   }
-    //   //   return x;
-    //   // }
-
-    //   // fac = trampoline(fac);
-
-    //   columnConfig.filterDelegate = () => {
-    //     console.log('func');
-    //     controller.abort();
-    //     return fac();
-    //   };
-    // }
+      columnConfig.filterDelegate = foo.bind(this, controller, d);
+      columnConfig.filterDelegate = () => {
+        console.log('go away');
+        return delegate;
+      };
+      // columnConfig.filterDelegate = foo.bind(this, controller, d);
+      (columnConfig.filterDelegate as TableFilterDelegateFactory)();
+    }
 
     return delegate.element;
   }

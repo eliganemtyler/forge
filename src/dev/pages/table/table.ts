@@ -66,7 +66,7 @@ const columnConfigurations: IColumnConfiguration[] = [
     sortable: true,
     initialSort: true,
     sortDirection: SortDirection.Descending,
-    filter: true,
+    // filter: true,
     filterDelegate: () => new TextFieldComponentDelegate({ options: { placeholder: new Date().getUTCSeconds().toString() }})
   },
   {
