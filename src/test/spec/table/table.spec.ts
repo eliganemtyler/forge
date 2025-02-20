@@ -1650,6 +1650,40 @@ describe('TableComponent', function(this: ITestContext) {
 
       expect(filterCallback).toHaveBeenCalled();
     });
+    
+    it('should not duplicate filter event listeners on filter element creation', async function(this: ITestContext) {
+      this.context = setupTestContext();
+      const testColumns: IColumnConfiguration[] = deepCopy(columns);
+      testColumns[0].filter = true;
+      testColumns[0].filterDelegate = new TextFieldComponentDelegate();
+      const filterDebounceTime = testColumns[0].filterDebounceTime || TABLE_CONSTANTS.numbers.DEFAULT_FILTER_DEBOUNCE_TIME;
+
+      this.context.component.data = data;
+      this.context.component.columnConfigurations = testColumns;
+      this.context.component.filter = true;
+
+      const lastTableRow = getLastTableHeaderRow(this.context.getTableElement());
+      const firstFilterCellIndex = this.context.component.select && this.context.component.multiselect ? 1 : 0;
+      const filterInputElement = lastTableRow.cells.item(firstFilterCellIndex)!.querySelector('input[type=text]') as HTMLInputElement;
+
+      const filterCallback = jasmine.createSpy('callback').and.callFake((evt: CustomEvent) => {
+        const evtData = evt.detail as ITableFilterEventData;
+        expect(evtData.value).toBe('a', 'Expected filter value to be provided.');
+        expect(evtData.columnIndex).toBe(0, 'Expected correct column index to be provided.');
+      });
+      this.context.component.addEventListener(TABLE_CONSTANTS.events.FILTER, filterCallback);
+
+      filterInputElement.value = 'a';
+      filterInputElement.dispatchEvent(new Event('input'));
+      await task(filterDebounceTime);
+      expect(filterCallback).toHaveBeenCalledTimes(1);
+      
+      this.context.component.filter = false;
+      this.context.component.filter = true;
+      filterInputElement.dispatchEvent(new Event('input'));
+      await task(filterDebounceTime);
+      expect(filterCallback).toHaveBeenCalledTimes(2);
+    });
 
     it('should remove resize handle when resizable is turned off', async function(this: ITestContext) {
       this.context = setupTestContext();
