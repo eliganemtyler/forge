@@ -54,7 +54,7 @@ export class FilePickerComponentDelegate extends BaseComponentDelegate<IFilePick
     }
   }
 
-  public onChange(cb: (evt: IFilePickerChangeEventData) => void): void {
-    this._element.addEventListener(FILE_PICKER_CONSTANTS.events.FILES_CHANGED, (evt: CustomEvent<IFilePickerChangeEventData>) => cb(evt.detail));
+  public onChange(cb: (evt: IFilePickerChangeEventData) => void, options?: AddEventListenerOptions): void {
+    this._element.addEventListener(FILE_PICKER_CONSTANTS.events.FILES_CHANGED, (evt: CustomEvent<IFilePickerChangeEventData>) => cb(evt.detail), options);
   }
 }

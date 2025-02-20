@@ -64,8 +64,12 @@ export class DateRangeComponentDelegate extends FormFieldComponentDelegate<IDate
     this._textField.invalid = value;
   }
 
-  public onChange(listener: (value: IDateRangePickerChangeEventData) => void): void {
-    this._element.addEventListener(DATE_RANGE_PICKER_CONSTANTS.events.CHANGE, (evt: CustomEvent<IDateRangePickerChangeEventData>) => listener(evt.detail));
+  public onChange(listener: (value: IDateRangePickerChangeEventData) => void, options?: AddEventListenerOptions): void {
+    this._element.addEventListener(
+      DATE_RANGE_PICKER_CONSTANTS.events.CHANGE,
+      (evt: CustomEvent<IDateRangePickerChangeEventData>) => listener(evt.detail),
+      options
+    );
   }
 
   public onFocus(listener: (evt: FocusEvent) => void): void {

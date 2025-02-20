@@ -81,8 +81,8 @@ export class ChipFieldComponentDelegate extends FormFieldComponentDelegate<IChip
     return this._labelElement;
   }
 
-  public onChange(listener: (value: string) => void): void {
-    this._inputElement.addEventListener('input', evt => listener((evt.target as HTMLInputElement).value));
+  public onChange(listener: (value: string) => void, options?: AddEventListenerOptions): void {
+    this._inputElement.addEventListener('input', evt => listener((evt.target as HTMLInputElement).value), options);
   }
 
   public onFocus(listener: (evt: Event) => void): void {

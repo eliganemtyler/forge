@@ -52,8 +52,8 @@ export class TimePickerComponentDelegate extends FormFieldComponentDelegate<ITim
     this._textFieldDelegate.invalid = value;
   }
 
-  public onChange(listener: (value: string) => void): void {
-    this._element.addEventListener(TIME_PICKER_CONSTANTS.events.CHANGE, (evt: CustomEvent<string>) => listener(evt.detail ?? ''));
+  public onChange(listener: (value: string) => void, options?: AddEventListenerOptions): void {
+    this._element.addEventListener(TIME_PICKER_CONSTANTS.events.CHANGE, (evt: CustomEvent<string>) => listener(evt.detail ?? ''), options);
   }
 
   public onInput(listener: (value: string) => void): void {

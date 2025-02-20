@@ -90,8 +90,8 @@ export class SliderComponentDelegate extends FormFieldComponentDelegate<ISliderC
     this._element.addEventListener('forge-slider-input', ({ detail }: CustomEvent<ISliderChangeEventData>) => listener(detail));
   }
 
-  public onChange(listener: (value: ISliderChangeEventData) => void): void {
-    this._element.addEventListener('forge-slider-change', ({ detail }: CustomEvent<ISliderChangeEventData>) => listener(detail));
+  public onChange(listener: (value: ISliderChangeEventData) => void, options?: AddEventListenerOptions): void {
+    this._element.addEventListener('forge-slider-change', ({ detail }: CustomEvent<ISliderChangeEventData>) => listener(detail), options);
   }
 
   public onRangeInput(listener: (value: ISliderRangeChangeEventData) => void): void {

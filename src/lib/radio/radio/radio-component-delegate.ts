@@ -77,8 +77,8 @@ export class RadioComponentDelegate extends FormFieldComponentDelegate<IRadioCom
     this._element.labelPosition = value;
   }
 
-  public onChange(listener: (evt: Event) => void): void {
-    this._element.addEventListener('change', listener);
+  public onChange(listener: (evt: Event) => void, options?: AddEventListenerOptions): void {
+    this._element.addEventListener('change', listener, options);
   }
 
   public onInput(listener: (evt: Event) => void): void {

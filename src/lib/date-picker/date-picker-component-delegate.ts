@@ -53,11 +53,11 @@ export class DatePickerComponentDelegate extends FormFieldComponentDelegate<IDat
     this._textFieldDelegate.invalid = value;
   }
 
-  public onChange(listener: (value: string) => void): void {
+  public onChange(listener: (value: string) => void, options?: AddEventListenerOptions): void {
     if (this._element.masked) {
-      this._element.addEventListener(DATE_PICKER_CONSTANTS.events.INPUT, evt => listener((evt.target as HTMLInputElement).value));
+      this._element.addEventListener(DATE_PICKER_CONSTANTS.events.INPUT, evt => listener((evt.target as HTMLInputElement).value), options);
     } else {
-      this.getInputElement().addEventListener('input', evt => listener((evt.target as HTMLInputElement).value));
+      this.getInputElement().addEventListener('input', evt => listener((evt.target as HTMLInputElement).value), options);
     }
   }
 

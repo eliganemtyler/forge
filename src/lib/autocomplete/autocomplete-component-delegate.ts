@@ -52,8 +52,8 @@ export class AutocompleteComponentDelegate extends FormFieldComponentDelegate<IA
     this._textFieldDelegate.invalid = value;
   }
 
-  public onChange(listener: (value: string) => void): void {
-    this._element.addEventListener(AUTOCOMPLETE_CONSTANTS.events.CHANGE, (evt: CustomEvent) => listener(evt.detail));
+  public onChange(listener: (value: string) => void, options?: AddEventListenerOptions): void {
+    this._element.addEventListener(AUTOCOMPLETE_CONSTANTS.events.CHANGE, (evt: CustomEvent) => listener(evt.detail), options);
   }
 
   public onFocus(listener: (evt: FocusEvent) => void): void {
