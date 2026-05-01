@@ -1,5 +1,11 @@
 # @tylertech/forge
 
+## 3.14.2
+
+### Patch Changes
+
+- cea015c: fix(button-area): fix internal button being directly clickable
+
 ## 3.14.1
 
 ### Patch Changes
